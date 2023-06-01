@@ -13,18 +13,17 @@ description 'Need work? Make a job'
 
 -- Manifest
 shared_scripts {
-	'config.lua',
+	'@ox_lib/init.lua',
+	'config.lua'
 }
 
 client_scripts {
     '@ox_core/imports/client.lua',
-    'c_main/main.lua',
-    'c_util/main.lua',
+    'client.lua'
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
     '@ox_core/imports/server.lua',
-    's_main/main.lua',
-    's_util/main.lua',
+    'server.lua'
 }
