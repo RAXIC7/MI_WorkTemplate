@@ -7,6 +7,19 @@ local spawn_boss = false
 local spawn_cont = false
 
 
+local function workloc_blip()
+    local workblip = AddBlipForCoord(
+        Config.wblip.loc.x, 
+        Config.wblip.loc.y,
+        Config.wblip.loc.z)
+    SetBlipSprite(workblip, Config.wblip.sprite)
+    SetBlipColour(workblip, Config.wblip.color)
+    SetBlipScale(workblip, Config.wblip.scale)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString(Config.wblip.name)
+    EndTextCommandSetBlipName(workblip)
+end
+
 local function vehicle_ped()
     if lib.requestModel(Config.vehicle_ped.model, 1000) then
         local npc = CreatePed(1, 
@@ -83,8 +96,47 @@ local function boss_ped()
 
         local options = {
             {
+                name = 'clock_in',
+                label = 'Clock in',
+                icon = 'fa-solid fa-check',
+                event = 'clock_in',
+                onSelect = function()
+                    TriggerServerEvent('service_enter')
+                    print('checked in')
+                end,
+                canInteract = function(_, distance)
+                    return distance < 2.0
+                end
+            },
+            {
+                name = 'clock_out',
+                label = 'Clock out',
+                icon = 'fa-solid fa-xmark',
+                event = 'clock_out',
+                onSelect = function()
+                    TriggerServerEvent('service_exit')
+                    print('checked out')
+                end,
+                canInteract = function(_, distance)
+                    return distance < 2.0
+                end
+            },
+
+            {
                 name = 'spawn_vehicle',
                 label = 'Job Option 1',
+                icon = 'fa-solid fa-user',
+                event = 'spawn_vehicle',
+                onSelect = function()
+                    --TriggerServerEvent('sp_vehicle', 'ulsaems')
+                end,
+                canInteract = function(_, distance)
+                    return distance < 2.0
+                end
+            },
+            {
+                name = 'spawn_vehicle',
+                label = 'Job Option 2',
                 icon = 'fa-solid fa-car',
                 event = 'spawn_vehicle',
                 onSelect = function()
@@ -121,7 +173,7 @@ local function zone_vehicle()
                         description = 'Return vehicle to garage',
                         icon = 'car',
                         onSelect = function()
-                            TriggerServerEvent('dl_vehicle')
+                            lib.callback('dl_vehicle')
                         end,
                     },
                 }
@@ -135,8 +187,13 @@ local function zone_vehicle()
     })
 end
 
+RegisterNetEvent('miwt:c:start_job1', function()
+
+end)
+
 Citizen.CreateThread(function()
     while spawn_boss == false do
+        workloc_blip()
         vehicle_ped()
         boss_ped()
         zone_vehicle()
