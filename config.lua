@@ -1,13 +1,19 @@
 Config = {}
-Config.debug = false
+Config.debug = true
+
+Config.jobname = 'job1'
 
 Config.boss_ped = {
     model = 's_f_y_scrubs_01',
-    loc = vector4(291.033, -612.452, 43.411, 339.898)
+    loc = vector4(349.55, -587.444, 28.796, 251.272)
+}
+
+Config.vehicle_ped = {
+    model = 's_m_m_paramedic_01',
+    loc = vector4(336.246, -589.631, 28.796, 341.906)
 }
 
 Config.vehicle = {
-    model = 'ulsaems',
-    loc = vector3(294.393, -607.19, 43.103),
-    head = 67.767
+    loc = vector3(332.327, -577.777, 28.529),
+    head = 340.212
 }

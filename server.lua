@@ -1,29 +1,27 @@
-RegisterServerEvent('sp_vehicle', function(car)
 
+
+-- spawn vehicle
+RegisterServerEvent('sp_vehicle', function(vehicle)
     local player = Ox.GetPlayer(source)
     print(json.encode(player, { indent = true }))
 
     local vehicle = Ox.CreateVehicle({
-        model = 'ulsaems2',
+        model = vehicle,
+        group = Config.jobname,
         owner = player.charid,
     }, Config.vehicle.loc, Config.vehicle.head)
     print(json.encode(vehicle, { indent = true }))
-
 end)
 
-RegisterServerEvent('op_garage', function(car)
-
+-- despawn & de-own vehicle
+RegisterServerEvent('dl_vehicle', function()
     local player = Ox.GetPlayer(source)
-    print(json.encode(player, { indent = true }))
-
-    local vehicleId = MySQL.scalar.await('SELECT id FROM vehicles WHERE owner = ? LIMIT 1', { player.charid })
-
-    if vehicleId then
-        local vehicle = Ox.CreateVehicle(vehicleId, Config.vehicle.loc, Config.vehicle.head)
-
-        if vehicle then
-            print(json.encode(vehicle, { indent = true }))
-        end
+    local vehicle = Ox.GetVehicle({
+        owner = player.charid,
+        group = Config.jobname,
+    })
+    print(json.encode(vehicle, { indent = true }))
+    if vehicle then
+        vehicle.delete(vehicle)
     end
-
 end)
