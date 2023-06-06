@@ -1,5 +1,5 @@
 ## MI_WorkTemplate
-This based on ox_core and is meant to be a sort of template for anyone who wants to make simple jobs or build off it to make something more complex. I intend to improve on this more and  I'm alwasy open to critiques and suggestions as well.
+This based on ox_core and is meant to be a sort of template for anyone who wants to make simple jobs or build off it to make something more complex. I intend to improve on this more and  I'm always open to critiques and suggestions as well.
 
 Self plug, but if you like the work, you can help me inject caffiene here:
 
