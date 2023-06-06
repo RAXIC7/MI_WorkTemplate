@@ -1,46 +1,60 @@
-local ox_inventory = exports.ox_inventory
--- ox_inventory:AddItem(source, 'money', math.random(10000, 300000))
-local players = {}
-local table = lib.table
+local pefcl = exports.pefcl
+local s_in_service = false
+local paycheckInterval = 15
+local paychecks = {
+    ['job1'] = { 100, 200, 300 },
+}
 
+local jobstash = {
+    id = Config.jobstash_id,
+    label = Config.jobstash_label,
+    slots = Config.jobstash_slots,
+    weight = Config.jobstash_weight,
+    owner = 'char1:license'
+}
+
+AddEventHandler('onServerResourceStart', function(resourceName)
+    if resourceName == 'ox_inventory' or resourceName == GetCurrentResourceName() then
+        exports.ox_inventory:RegisterStash(
+            jobstash.id, 
+            jobstash.label, 
+            jobstash.slots, 
+            jobstash.weight, 
+            jobstash.owner, 
+            jobstash.jobs)
+    end
+end)
+
+-- Credit and thanks to FlakeSkillz for creating this method of paycheck intervals
+---@diagnostic disable: missing-parameter, param-type-mismatch
 CreateThread(function()
-    for _, player in pairs(Ox.GetPlayers(true, { groups = Config.jobname })) do
-        local inService = player.get('inService')
-        if inService and table.contains(Config.jobname, inService) then
-            players[player.source] = player
+    while s_in_service == true do
+        Wait(paycheckInterval * 60000)
+        for _, player in pairs(Ox.GetPlayers()) do
+            local group = Config.jobname
+            local grade = player.getGroup(group)
+            local paycheck = paychecks?[group]?[grade]
+
+            if paycheck > 0 and pefcl:getTotalBankBalanceByIdentifier(player.source, group) then
+                pefcl:removeBankBalanceByIdentifier(player.source, { 
+                    identifier = group, 
+                    amount = paycheck, 
+                    message = 'Work: Direct Deposit'  })
+                pefcl:addBankBalance(player.source, { 
+                    amount = paycheck, 
+                    message = 'Work: Direct Deposit' })
+            end
         end
     end
 end)
 
--- register service
-RegisterNetEvent('service_enter', function(group)
-    local player = Ox.GetPlayer(source)
-    if player then
-        if group and table.contains(Config.jobname, group) and player.hasGroup(Config.jobname) then
-            players[source] = player
-            return player.set('inService', group, true)
-        end
-        player.set('inService', false, true)
+-- simple player service checker (server side)
+lib.callback.register('checkin', function(source)
+    if s_in_service == false then
+        s_in_service = true
+    else
+        s_in_service = false
     end
-    players[source] = nil
-    print(source)
-end)
-
-RegisterNetEvent('service_exit', function(group)
-    local player = Ox.GetPlayer(source)
-    if player then
-        if group and table.contains(Config.jobname, group) and player.hasGroup(Config.jobname) then
-            players[source] = player
-            return player.set('inService', group, false)
-        end
-        player.set('inService', false, true)
-    end
-    players[source] = nil
-    print(source)
-end)
-
-lib.callback.register('ox:isPlayerInService', function(source, target)
-    return players[target or source]
 end)
 
 -- spawn vehicle
@@ -57,7 +71,7 @@ RegisterServerEvent('sp_vehicle', function(vehicle)
 end)
 
 -- despawn & de-own vehicle
-lib.callback.register('dl_vehicle', function(source)
+RegisterServerEvent('dl_vehicle', function(source)
     local player = GetPlayerPed(source)
     local entity = GetVehiclePedIsIn(player)
     if entity == 0 then return end
@@ -68,4 +82,11 @@ lib.callback.register('dl_vehicle', function(source)
         DeleteEntity(entity)
     end
     return true
+end)
+
+-- job payout
+lib.callback.register('payout', function(source)
+    exports.pefcl:addBankBalance(source, { 
+        amount = Config.job1.payment, 
+        message = 'Job: Task c/w'})
 end)
