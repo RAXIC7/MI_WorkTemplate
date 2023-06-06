@@ -4,6 +4,9 @@ This based on ox_core and is meant to be a sort of template for anyone who wants
 Self plug, but if you like the work, you can help me inject caffiene here:
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S5IBXL6)
 
+*quick video demo*
+https://streamable.com/lxxpk5
+
 ## Dependancies
 * [OverExtended](https://github.com/overextended/overextended.github.io)
     * [Core](https://github.com/overextended/ox_core)
