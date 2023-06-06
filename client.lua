@@ -195,7 +195,7 @@ local function zone_vehicle()
                         description = 'Return vehicle to garage',
                         icon = 'car',
                         onSelect = function()
-                            lib.callback('dl_vehicle')
+                            RegisterServerEvent('dl_vehicle')
                         end,
                     },
                 }
@@ -354,28 +354,27 @@ RegisterNetEvent('miwt:c:start_job1', function()
 end)
 
 RegisterNetEvent('miwt:c:finish_job1', function()
+    exports.scully_emotemenu:PlayByCommand('notepad')
     if lib.progressBar({
-        duration = 2000,
-        label = 'Drinking water',
+        duration = 3000,
+        label = 'Joing Job 1',
         useWhileDead = false,
         canCancel = true,
         disable = {
             car = true,
         },
-        anim = {
-            dict = 'mp_player_intdrink',
-            clip = 'loop_bottle'
-        },
-        prop = {
-            model = `prop_ld_flow_bottle`,
-            pos = vec3(0.03, 0.03, 0.02),
-            rot = vec3(0.0, 0.0, -1.5)
-        },
     }) then print('Do stuff when complete') else print('Do stuff when cancelled') end
-        lib.callback('payout')
-        dl_taskped()
-        in_work = false
-        cur_task = nil
+    exports.scully_emotemenu:CancelAnimation()
+    RemoveBlip(job_blip)
+    lib.notify({
+        title = 'Task Completed',
+        description = 'Good job',
+        type = 'success'
+    })
+    lib.callback('payout')
+    dl_taskped()
+    in_work = false
+    cur_task = nil
     
 end)
 
@@ -394,6 +393,7 @@ RegisterNetEvent('miwt:c:start_job2', function()
 end)
 
 RegisterNetEvent('miwt:c:finish_job2', function()
+    exports.scully_emotemenu:PlayByCommand('mechanic4')
     local success = lib.skillCheck({'easy', 'easy', 'easy'}, {'w', 'a', 's', 'd'})
     if success == true then
         lib.notify({
@@ -401,16 +401,20 @@ RegisterNetEvent('miwt:c:finish_job2', function()
             description = 'Good job',
             type = 'success'
         })
+        RemoveBlip(job_blip)
+        exports.scully_emotemenu:CancelAnimation()
         lib.callback('payout')
         dl_taskobj()
         in_work = false
         cur_task = nil
     else
+        RemoveBlip(job_blip)
         lib.notify({
             title = 'Task Failed',
             description = 'Not good job',
             type = 'error'
         })
+        exports.scully_emotemenu:CancelAnimation()
         dl_taskobj()
         in_work = false
         cur_task = nil

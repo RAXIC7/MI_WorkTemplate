@@ -41,11 +41,11 @@ Config.vehicle = {
 Config.job1 = {
     payment = math.random(100, 200),
     [1] = {
-        loc = vector4(353.595, -584.149, 28.796, 123.693),
+        loc = vector4(355.789, -585.191, 28.796, 183.849),
         model = 'mp_f_chbar_01',
     },
     [2] = {
-        loc = vector4(355.691, -584.674, 28.796, 161.454),
+        loc = vector4(355.789, -585.191, 28.796, 183.849),
         model = 'mp_m_famdd_01',
     }
 }
@@ -54,11 +54,11 @@ Config.job1 = {
 Config.job2 = {
     payment = math.random(200, 300),
     [1] = {
-        loc = vector4(353.595, -584.149, 28.796, 123.693),
+        loc = vector4(353.42, -583.903, 28.796, 161.23),
         object = 'v_ind_cm_electricbox',
     },
     [2] = {
-        loc = vector4(355.691, -584.674, 28.796, 161.454),
+        loc = vector4(353.42, -583.903, 28.796, 161.23),
         object = 'v_ind_cm_electricbox',
     }
 }
