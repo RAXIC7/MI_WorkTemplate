@@ -5,11 +5,11 @@ Self plug, but if you like the work, you can help me inject caffiene here:
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S5IBXL6)
 
 ## Dependancies
-* [Ox Framework](https://github.com/overextended/overextended.github.io)
-    * Core
-    * Lib
-    * Target
-    * Inventory
+* [OverExtended](https://github.com/overextended/overextended.github.io)
+    * [Core](https://github.com/overextended/ox_core)
+    * [Lib](https://github.com/overextended/ox_lib)
+    * [Target](https://github.com/overextended/ox_target)
+    * [Inventory](https://github.com/overextended/ox_inventory)
 * [PEFCL](https://github.com/project-error/pefcl)
 * [Scully Emote Menu](https://github.com/Scullyy/scully_emotemenu/tree/main)
 
